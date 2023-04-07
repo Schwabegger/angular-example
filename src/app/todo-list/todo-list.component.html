@@ -1,6 +1,9 @@
-<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.2.3/dist/journal/bootstrap.min.css" rel="stylesheet"> 
+<!-- <h3>Todo List</h3> -->
 
-<h1>My Todo List</h1>
+<button (click)="previousPage()">Previous</button>
+<button (click)="nextPage()">Next</button>
+
+<hr>
 
 <ul class="todo-list">
   <li *ngFor="let todo of todos" class="todo-list__todo">
@@ -11,7 +14,7 @@
         <!-- <input class="todo-list__task-check" type="checkbox" [checked]="task.completed">{{ task.name }} -->
       </li>
     </ul>
-    <button class="todo-list_button" (click)="edit(todo.id)">Bearbeiten</button>
-    <button class="todo-list_button" (click)="deleteTodo(todo.id)">Löschen</button>
+    <button routerLink="/todos/{{ todo.id }}/edit">Bearbeiten</button>
+    <button class="todo-list_button" (click)="deleteTodoAsync(todo.id)">Löschen</button>
   </li>
 </ul>

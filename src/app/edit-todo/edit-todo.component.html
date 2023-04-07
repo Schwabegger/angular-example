@@ -1,0 +1,17 @@
+<form>
+    <table>
+        <tr>
+            <td><label for="title">Title:</label></td>
+            <td><input type="text" id="title" name="title" [(ngModel)]="todo.title"></td>
+        </tr>
+        <tr>
+            <td><label for="description">Description:</label></td>
+            <td><textarea id="description" name="description" [(ngModel)]="todo.description"></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="dueDate">Due date:</label></td>
+            <td><input type="date" id="dueDate" name="dueDate" [(ngModel)]="todo.dueDate"></td>
+        </tr>
+    </table>
+    <button type="submit">Save</button>
+</form>
