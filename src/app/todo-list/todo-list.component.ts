@@ -39,13 +39,8 @@ export class TodoListComponent implements OnInit {
   todos: any[] = [];
   pb = new PocketBase('https://to-dos.pockethost.io');
   page = 1;
-
-  async deleteTodoAsync(id: string): Promise<void> {
-    await this.pb.collection('todos').delete(id).then(() => {
-      console.log('Deleted todo with ID:', id);
-      this.todos = this.todos.filter(todo => todo.id !== id);
-    });
-  }
+  showConfirmation = false;
+  selectedTodoId = '';
 
   async previousPage() {
     if (this.page > 1) {
@@ -98,5 +93,26 @@ export class TodoListComponent implements OnInit {
     });
     console.log('Fetched records from', start, 'to', end);
     this.todos = structuredClone(records.items);
+  }
+
+  confirmDelete(todoId:string) {
+    this.showConfirmation = true;
+    this.selectedTodoId = todoId;
+  }
+
+  async delete() {
+    this.showConfirmation = false;
+    await this.deleteTodoAsync(this.selectedTodoId);
+  }
+
+  async cancelDelete() {
+    this.showConfirmation = false;
+  }
+
+  async deleteTodoAsync(id: string): Promise<void> {
+    await this.pb.collection('todos').delete(id).then(() => {
+      console.log('Deleted todo with ID:', id);
+      this.todos = this.todos.filter(todo => todo.id !== id);
+    });
   }
 }

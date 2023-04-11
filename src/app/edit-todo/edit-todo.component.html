@@ -1,17 +1,27 @@
-<form>
-    <table>
-        <tr>
-            <td><label for="title">Title:</label></td>
-            <td><input type="text" id="title" name="title" [(ngModel)]="todo.title"></td>
-        </tr>
-        <tr>
-            <td><label for="description">Description:</label></td>
-            <td><textarea id="description" name="description" [(ngModel)]="todo.description"></textarea></td>
-        </tr>
-        <tr>
-            <td><label for="dueDate">Due date:</label></td>
-            <td><input type="date" id="dueDate" name="dueDate" [(ngModel)]="todo.dueDate"></td>
-        </tr>
-    </table>
-    <button type="submit">Save</button>
+<form #editTodoForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="card" style="width: 18rem; margin: 5px;">
+        <div class="card-header">
+            <!-- <td><label for="title">Title</label></td> -->
+            <td><input type="text" id="title" name="title" [(ngModel)]="todo.title" style="border-radius: 5px;"></td>
+        </div>
+        <div class="card-text" style="flex: content;">
+            <ul class="card-text" style="overflow-y: auto; flex: content;">
+                <!-- <li *ngFor="let task of todo.expand.tasks">
+                        <input type="checkbox" [checked]="task.completed">{{ task.name }}
+                        <input type="checkbox" [(ngModel)]="task.completed">{{ task.name }}
+                    </li> -->
+                <li *ngFor="let task of todo.tasks" style="margin: 3px;">
+                    <!-- <input type="checkbox" [checked]="task.completed">{{ task.name }} -->
+                    <input type="checkbox" [(ngModel)]="task.completed">{{ task.name }}
+                </li>
+            </ul>
+            <button type="button" class="btn btn-secondary" style="margin-left: 15px; margin-bottom: 5px;" (click)="addTask()">Aufgabe Hinzufügen</button>
+        </div>
+        <!-- <select id="description" name="description" [(ngModel)]="tasks">
+            <option *ngFor="let task of todo.tasks" [value]="task">{{task}}</option>
+        </select> -->
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">Speichern</button>
+        </div>
+    </div>
 </form>

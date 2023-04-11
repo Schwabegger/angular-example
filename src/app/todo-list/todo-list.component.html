@@ -1,20 +1,30 @@
 <!-- <h3>Todo List</h3> -->
-
 <button (click)="previousPage()">Previous</button>
 <button (click)="nextPage()">Next</button>
 
 <hr>
+<div class="card-container">
+  <!-- <div style="max-height: 50px; width: 150px;"> -->
+    <div *ngFor="let todo of todos" class="card" style="width: 18rem; margin: 5px; height: 300px;">
+      <h2 class="card-header">{{ todo.title }}</h2>
+      <ul class="card-text" style="overflow-y: auto; max-height: 200px; flex: content;">
+        <li *ngFor="let task of todo.expand.tasks"
+          [ngClass]="{'green, symbolTick': task.completed, 'red, symbolCross': !task.completed}">
+          {{ task.name }}
+        </li>
+      </ul>
+      <div class="card-footer">
+        <button class="btn btn-secondary" routerLink="/todos/{{ todo.id }}/edit">Bearbeiten</button>
+        <button class="btn btn-danger" (click)="confirmDelete(todo.id)">Löschen</button>
+      </div>
+    </div>
+  <!-- </div> -->
+</div>
 
-<ul class="todo-list">
-  <li *ngFor="let todo of todos" class="todo-list__todo">
-    <h2>{{ todo.title }}</h2>
-    <ul>
-      <li *ngFor="let task of todo.expand.tasks" [ngClass]="{'green': task.completed, 'red': !task.completed}">
-        {{ task.name }}
-        <!-- <input class="todo-list__task-check" type="checkbox" [checked]="task.completed">{{ task.name }} -->
-      </li>
-    </ul>
-    <button routerLink="/todos/{{ todo.id }}/edit">Bearbeiten</button>
-    <button class="todo-list_button" (click)="deleteTodoAsync(todo.id)">Löschen</button>
-  </li>
-</ul>
+<div class="confirmation-overlay" *ngIf="showConfirmation">
+  <div class="confirmation-modal">
+    <p>Bist du sicher, dass du löschen möchtest?</p>
+    <button type="button" class="btn btn-danger" (click)="delete()">Ja</button>
+    <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Nein</button>
+  </div>
+</div>

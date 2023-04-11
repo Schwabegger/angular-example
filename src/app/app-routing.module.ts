@@ -4,6 +4,7 @@ import { EditTodoComponent } from './edit-todo/edit-todo.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 
 const routes: Routes = [
+  { path: '', component: TodoListComponent },
   { path: 'todos', component: TodoListComponent },
   { path: 'todos/:id/edit', component: EditTodoComponent }
 ];
