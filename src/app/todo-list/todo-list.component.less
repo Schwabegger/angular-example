@@ -3,9 +3,11 @@
   flex-wrap: wrap;
   max-width: 100%; /* anpassen */
   margin: 0 auto;
-  
 }
 
+.cardBorder {
+  border: #016311;
+}
 
 li.symbolTick::before {
   content: "✔️";
@@ -63,8 +65,9 @@ li {
 .confirmation-modal {
   position: relative;
   width: 400px;
-  height: 200px;
-  background-color: white;
+  height: 150px;
+  // background-color: white;
+  background-color: rgba(0,0,0,0.8);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,19 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { EditTodoComponent } from './edit-todo/edit-todo.component';
-import { FormsModule } from '@angular/forms'; // Import the FormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import the FormsModule
+import { CreateTodoComponent } from './create-todo/create-todo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
-    EditTodoComponent
+    EditTodoComponent,
+    CreateTodoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule, // Add FormsModule to the imports array
-    HttpClientModule // Add HttpClientModule to imports
+    HttpClientModule, // Add HttpClientModule to imports
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

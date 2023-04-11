@@ -1,24 +1,23 @@
-<!-- <h3>Todo List</h3> -->
-<button (click)="previousPage()">Previous</button>
-<button (click)="nextPage()">Next</button>
+<!-- <div style="flex-direction: column; flex: content;"> -->
+<button class="btn btn-info border border-info" (click)="previousPage()">Zurück</button>
+<button class="btn btn-info border border-info float-end" (click)="nextPage()">Vor</button>
 
 <hr>
+
 <div class="card-container">
-  <!-- <div style="max-height: 50px; width: 150px;"> -->
-    <div *ngFor="let todo of todos" class="card" style="width: 18rem; margin: 5px; height: 300px;">
-      <h2 class="card-header">{{ todo.title }}</h2>
-      <ul class="card-text" style="overflow-y: auto; max-height: 200px; flex: content;">
-        <li *ngFor="let task of todo.expand.tasks"
-          [ngClass]="{'green, symbolTick': task.completed, 'red, symbolCross': !task.completed}">
-          {{ task.name }}
-        </li>
-      </ul>
-      <div class="card-footer">
-        <button class="btn btn-secondary" routerLink="/todos/{{ todo.id }}/edit">Bearbeiten</button>
-        <button class="btn btn-danger" (click)="confirmDelete(todo.id)">Löschen</button>
-      </div>
+  <div *ngFor="let todo of todos" class="card border border-info" style="width: 18rem; margin: 5px; height: 300px;">
+    <h2 class="card-header">{{ todo.title }}</h2>
+    <ul class="card-text" style="overflow-y: auto; max-height: 200px; flex: content;">
+      <li *ngFor="let task of todo.expand.tasks"
+        [ngClass]="{'green, symbolTick': task.completed, 'red, symbolCross': !task.completed}">
+        {{ task.name }}
+      </li>
+    </ul>
+    <div class="card-footer">
+      <button class="btn btn-info" style="margin: 2px;" routerLink="/todos/{{ todo.id }}/edit">Bearbeiten</button>
+      <button class="btn btn-danger" style="margin: 2px;" (click)="confirmDelete(todo.id)">Löschen</button>
     </div>
-  <!-- </div> -->
+  </div>
 </div>
 
 <div class="confirmation-overlay" *ngIf="showConfirmation">

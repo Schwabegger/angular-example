@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import PocketBase from 'pocketbase';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Router} from "@angular/router"
 
 @Component({
   selector: 'app-edit-todo',
@@ -15,9 +16,9 @@ export class EditTodoComponent implements OnInit {
   id = this.route.snapshot.paramMap.get('id');
   todo: any;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
     this.todoForm = this.fb.group({
-      // title: ['', Validators.required],
+      // title: ['', Validators.required, Validators.minLength(3)],
       // tasks: ['', Validators.required]
     });
   }
@@ -28,14 +29,15 @@ export class EditTodoComponent implements OnInit {
       expand: 'tasks',
     });
     console.log('Fetched to-do item with ID:', this.id);
-    // this.todo = structuredClone(todoRecords);
 
+    // Create an array of tasks and populate it with the tasks from the to-do item
     const todoTasks:any = [];
     todoRecords.expand['tasks'].forEach((task: any) => {
       todoTasks.push({
         id: task.id,
         name: task.name,
-        completed: task.completed
+        completed: task.completed,
+        changed: false
       });
     });
 
@@ -58,42 +60,50 @@ export class EditTodoComponent implements OnInit {
       return;
     }
 
-    // const updateTodo = {
-    //   title: this.todo.title,
-    //   tasks: this.todo.expand.tasks
-    // };
-    // console.log(updateTodo);
-
     await this.updateTodo();
+
+    this.router.navigate(['/todos']);
   }
 
   async updateTodo() {
-    // console.log(this.todo.expand.tasks[0].completed);
-    // this.todo.expand.tasks[0].completed = false;
-    // console.log(this.todo);
-
-    this.todo.tasks.forEach((task: any) => {
-      console.log(task.completed);
-    });
-
-    return;
-
-    // Iterate over each task and call updateTask function
-    await Promise.all(this.todo.expand.tasks.map(async (task: any) => {
-      await this.updateTask(task.id.toString(), task.completed);
+    let count = 0;
+    // Iterate over each task and call updateTask function if the task has been changed
+    await Promise.all(this.todo.tasks.map(async (task: any) => {
+      if (task.changed){
+        await this.updateTask(task.id.toString(), task.completed);
+        count++;
+      }
     }));
-    console.log('Updated all tasks');
+    // Log the number of tasks that were updated
+    if(count > 0)
+      console.log('Updated ', count ,' tasks');
+    else
+      console.log('No tasks were updated');
 
-    const todoRecord = await this.pb.collection('todos').update(this.id!.toString(), this.todo, {
+    // Update the to-do item with the given ID and expand the tasks field to return the updated tasks list in the response
+    const todoRecord = await this.pb.collection('todos').update(this.id!.toString(), {
+      title: this.todo.title,
       expand: 'tasks'
     });
     console.log('Saved to-do item');
     console.log(todoRecord);
   }
 
+  // Update the task with the given ID and set the completed field to the given value
   async updateTask(taskId: string, completed: boolean) {
     const taskRecord = await this.pb.collection('tasks').update(taskId, { completed: completed });
     console.log('Updated task: ', taskId);
     console.log(taskRecord);
+  }
+
+  // Toggle the completed field of the task with the given ID
+  async toggleTask(taskId: string) {
+    this.todo.tasks.forEach((task: any) => {
+      if (task.id === taskId) {
+        task.completed = !task.completed;
+        task.changed = !task.changed;
+        console.log('Toggled task: ', taskId, 'from', !task.completed, 'to', task.completed);
+      }
+    });
   }
 }

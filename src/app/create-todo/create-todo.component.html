@@ -1,13 +1,12 @@
 <form #editTodoForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="card" style="width: 18rem; margin: 5px;">
         <div class="card-header">
-            <!-- <td><label for="title">Title</label></td> -->
-            <td><input type="text" id="title" name="title" [(ngModel)]="todo.title" style="border-radius: 5px;" class="form-control" placeholder="Titel"></td>
+            <td><input type="text" id="title" name="title" [(ngModel)]="newTodo.title" style="border-radius: 5px;" class="form-control" placeholder="Titel"></td>
         </div>
         <div class="card-text" style="flex: content;">
             <ul class="card-text" style="overflow-y: auto; flex: content;">
-                <li *ngFor="let task of todo.tasks" style="margin: 3px;">
-                    <input type="checkbox" [checked]="task.completed" (click)="toggleTask(task.id)">{{ task.name }}
+                <li *ngFor="let task of newTodo.tasks" style="margin: 3px;">
+                    <input type="text">
                 </li>
             </ul>
             <!-- <button type="button" class="btn btn-secondary" style="margin-left: 15px; margin-bottom: 5px;" (click)="addTask()">Aufgabe Hinzufügen</button> -->
