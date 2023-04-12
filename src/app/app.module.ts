@@ -8,6 +8,8 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { EditTodoComponent } from './edit-todo/edit-todo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Import the FormsModule
 import { CreateTodoComponent } from './create-todo/create-todo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { CreateTodoComponent } from './create-todo/create-todo.component';
     AppRoutingModule,
     FormsModule, // Add FormsModule to the imports array
     HttpClientModule, // Add HttpClientModule to imports
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

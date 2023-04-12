@@ -41,11 +41,13 @@ export class TodoListComponent implements OnInit {
   page = 1;
   showConfirmation = false;
   selectedTodoId = '';
+  amountOfTodos:number = 12;
+  nextPageDisabled = false;
 
   async previousPage() {
     if (this.page > 1) {
       this.page--;
-      await this.fetchTodos(this.page * 10 - 9, this.page * 10);
+      await this.fetchTodos(this.page * this.amountOfTodos - (this.amountOfTodos - 1), this.page * this.amountOfTodos);
     }
     else {
       console.log('Already on first page');
@@ -53,9 +55,14 @@ export class TodoListComponent implements OnInit {
   }
 
   async nextPage() {
+    if(this.nextPageDisabled) {
+      console.log('No more records');
+      return;
+    }
+    
     try {
       this.page++;
-      await this.fetchTodos(this.page * 10 - 9, this.page * 10);
+      await this.fetchTodos(this.page * this.amountOfTodos - (this.amountOfTodos - 1), this.page * this.amountOfTodos);
     } catch (e) {
       this.page--;
       console.log('No more records');
@@ -74,7 +81,7 @@ export class TodoListComponent implements OnInit {
     // console.log('Fetched all records');
     // this.todos = structuredClone(allRecords);
 
-    await this.fetchTodos(1, 10);
+    await this.fetchTodos(1, this.amountOfTodos);
 
     // this.http.get<Todo[]>('https://to-dos.pockethost.io/api/collections/todos/records').subscribe(
     //   response => {
@@ -86,11 +93,24 @@ export class TodoListComponent implements OnInit {
     // );
   }
 
+  async paginationChanged() {
+    this.page = 1;
+    await this.fetchTodos(this.page * this.amountOfTodos - (this.amountOfTodos - 1), this.page * this.amountOfTodos);
+  }
+
   async fetchTodos(start: number, end: number) {
     const records = await this.pb.collection('todos').getList(start, end, {
       sort: '-created',
       expand: 'tasks',
+      perPage: this.amountOfTodos,
+      page: this.page,
     });
+    
+    if(records.totalItems / this.amountOfTodos <= this.page)
+      this.nextPageDisabled = true;
+    else
+      this.nextPageDisabled = false;
+      
     console.log('Fetched records from', start, 'to', end);
     this.todos = structuredClone(records.items);
   }

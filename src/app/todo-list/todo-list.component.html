@@ -1,12 +1,20 @@
 <!-- <div style="flex-direction: column; flex: content;"> -->
-<button class="btn btn-info border border-info" (click)="previousPage()">Zurück</button>
-<button class="btn btn-info border border-info float-end" (click)="nextPage()">Vor</button>
+<button class="btn btn-info border border-info" style="display: inline;" (click)="previousPage()">Zurück</button>
+<select class="form-select position-absolute start-50" style="text-align: center; max-width: 75px; display: inline;" [(ngModel)]="amountOfTodos" (change)="paginationChanged()">
+  <option value="12" selected="selected">12</option>
+  <option value="18">18</option>
+  <option value="24">24</option>
+</select>
+<button class="btn btn-info border border-info float-end" style="display: inline;" (click)="nextPage()">Vor</button>
 
 <hr>
 
 <div class="card-container">
   <div *ngFor="let todo of todos" class="card border border-info" style="width: 18rem; margin: 5px; height: 300px;">
-    <h2 class="card-header">{{ todo.title }}</h2>
+    <div class="card-header">
+      <h2>{{ todo.title }}</h2>
+      <!-- <img class="position-absolute start-100" style="max-width: 30px; max-height: 30px;" src="https://static.vecteezy.com/system/resources/previews/000/638/886/original/vector-text-letter-list-icon.jpg"> -->
+    </div>
     <ul class="card-text" style="overflow-y: auto; max-height: 200px; flex: content;">
       <li *ngFor="let task of todo.expand.tasks"
         [ngClass]="{'green, symbolTick': task.completed, 'red, symbolCross': !task.completed}">

@@ -1,15 +1,24 @@
-<form #editTodoForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="card" style="width: 18rem; margin: 5px;">
+<form #editTodoForm="ngForm" (ngSubmit)="onSubmit()" (keydown)="onFormKeyDown($event)">
+    <div class="card border border-info" style="width: 18rem; margin: 5px; height: 300px;">
         <div class="card-header">
-            <td><input type="text" id="title" name="title" [(ngModel)]="newTodo.title" style="border-radius: 5px;" class="form-control" placeholder="Titel"></td>
+            <input type="text" id="title" [(ngModel)]="newTodo.title" name="title" style="border-radius: 5px;"
+                class="form-control" placeholder="Titel">
         </div>
-        <div class="card-text" style="flex: content;">
-            <ul class="card-text" style="overflow-y: auto; flex: content;">
+        <div class="card-text" style="flex: content; overflow-y: scroll; max-height: 500px;">
+            <ul class="card-text" style="flex: content;">
                 <li *ngFor="let task of newTodo.tasks" style="margin: 3px;">
-                    <input type="text">
+                    {{ task.name }}
                 </li>
             </ul>
             <!-- <button type="button" class="btn btn-secondary" style="margin-left: 15px; margin-bottom: 5px;" (click)="addTask()">Aufgabe Hinzufügen</button> -->
+        </div>
+        <div>
+            <input type="text" style="margin: 10px; margin-left: 20px;" [(ngModel)]="newTask" name="newTask" (keydown.enter)="addTask()" placeholder="Aufgabe hinzufügen">
+            <br>
+            <select class="form-select" style="text-align: center; max-width: 180px; margin-left: 20px;" [(ngModel)]="selectedTask" name="selectedTask" (change)="selectedTaskChanged()">
+                <!-- <option value="f" selected="selected">Aufgabe wählen</option> -->
+                <option *ngFor="let task of allTasks" [ngValue]="task.id">{{ task.name }}</option>
+            </select>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-success">Speichern</button>
